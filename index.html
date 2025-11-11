@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MAX EDUCATION — Qabul boshlash</title>
+<style>
+  :root{
+    --bg:#021430;
+    --panel:#071a3a;
+    --muted:#cfe3ff;
+    --accent:#FFD24D;
+    --accent-2:#f7c400;
+    --glass:rgba(255,255,255,0.03);
+    --radius:14px;
+    --maxw:1100px;
+    --transition:180ms cubic-bezier(.2,.9,.3,1);
+    --success:#b9e986;
+    --error:#ff9a9a;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg,var(--bg) 0%, #052248 100%);
+    color:var(--muted);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+  }
+
+  /* Layout */
+  .card{
+    width:100%;
+    max-width:var(--maxw);
+    display:grid;
+    grid-template-columns: 1fr 540px;
+    gap:28px;
+    align-items:stretch;
+  }
+
+  /* Panels */
+  .brand-panel{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius);
+    padding:28px;
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .form-panel{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius);
+    padding:22px;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow:0 18px 50px rgba(0,0,0,0.55);
+  }
+
+  /* Brand */
+  .brand-top{ display:flex; gap:16px; align-items:center; }
+  .logo-box{ width:108px; height:108px; border-radius:12px; background:var(--glass); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .brand-title{ color:var(--accent); font-size:22px; font-weight:800; margin:0; }
+  .brand-sub{ font-size:14px; color:var(--muted); margin-top:4px; }
+
+  .bullets{ display:grid; gap:12px; margin-top:6px; }
+  .bullet{ display:flex; gap:12px; align-items:flex-start; }
+  .bullet .ico{ width:44px; height:44px; border-radius:10px; background:rgba(255,255,255,0.02); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .bullet strong{ display:block; color:#fff; font-size:15px; }
+  .bullet p{ margin:0; color:var(--muted); font-size:13px; margin-top:4px; }
+
+  .contacts{ margin-top:auto; border-top:1px dashed rgba(255,255,255,0.03); padding-top:12px; color:var(--muted); font-size:14px; display:flex; flex-direction:column; gap:8px; }
+  .contacts a{ color:var(--muted); text-decoration:none; font-weight:700; }
+  .contacts .small{ color:rgba(255,255,255,0.7); font-size:13px; }
+
+  /* Form */
+  .form-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:6px; }
+  .form-title{ color:var(--accent); font-weight:800; font-size:20px; margin:0; }
+  .form-sub{ font-size:13px; color:var(--muted); }
+
+  .lang-switch{ display:flex; gap:8px; }
+  .lang-btn{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06);
+    color:var(--muted);
+    padding:7px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .lang-btn.active{ background:var(--accent); color:#021430; border-color:var(--accent); }
+
+  form{ display:grid; grid-template-columns: repeat(2,1fr); gap:12px; margin-top:12px; }
+  label{ font-size:13px; color:var(--muted); font-weight:700; display:block; margin-bottom:6px; }
+  .field{ position:relative; }
+
+  input[type="text"], input[type="tel"], select, textarea{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:none;
+    background: rgba(255,255,255,0.03);
+    color:var(--muted);
+    font-size:14px;
+    outline:none;
+    transition: box-shadow var(--transition), transform var(--transition);
+  }
+  input:focus, select:focus, textarea:focus{
+    box-shadow: 0 10px 30px rgba(0,0,0,0.55), 0 0 0 4px rgba(255,210,77,0.06);
+    transform: translateY(-1px);
+  }
+  select option{ color:#000; }
+
+  .full{ grid-column:1 / -1; }
+
+  .left-ico{ position:absolute; left:12px; top:50%; transform:translateY(-50%); width:20px; height:20px; pointer-events:none; opacity:0.95; }
+  input.with-ico{ padding-left:44px; }
+
+  .actions{ display:flex; gap:12px; align-items:center; margin-top:8px; }
+  .btn-primary{
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#021430;
+    padding:14px 18px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-weight:800;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  }
+  .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); padding:12px 14px; border-radius:10px; cursor:pointer; }
+
+  .status{ margin-top:10px; font-weight:700; color:var(--success); }
+
+  /* Responsive: mobile-first adjustments */
+  @media(max-width:1024px){
+    .card{ grid-template-columns: 1fr; }
+    .brand-panel{ order:2; }
+    .form-panel{ order:1; }
+  }
+
+  @media(max-width:640px){
+    body{ padding:18px; }
+    .logo-box{ width:84px; height:84px; }
+    .form-title{ font-size:18px; }
+    form{ grid-template-columns:1fr; gap:10px; }
+    .contacts{ font-size:13px; }
+  }
+
+  .error{ color:var(--error); font-weight:700; font-size:13px; }
+  a.cta-link{ color:var(--accent); text-decoration:none; font-weight:800; }
+</style>
+</head>
+<body>
+  <div class="card" role="main" aria-labelledby="mainTitle">
+    <!-- BRAND -->
+    <aside class="brand-panel" aria-label="brand panel">
+      <div class="brand-top">
+        <div class="logo-box" aria-hidden="true">
+          <!-- Inline SVG logo -->
+          <svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MAX EDUCATION logo" width="96">
+            <text x="0" y="70" font-family="Inter, Arial, sans-serif" font-weight="800" font-size="80" fill="#16a0ff">m</text>
+            <text x="84" y="70" font-family="Inter, Arial, sans-serif" font-weight="800" font-size="80" fill="#556068">ax</text>
+            <text x="0" y="100" font-family="Inter, Arial, sans-serif" font-size="16" fill="#98a2b3">education abroad</text>
+          </svg>
+        </div>
+        <div>
+          <h1 id="mainTitle" class="brand-title">MAX EDUCATION</h1>
+          <div id="brandSub" class="brand-sub">Qabul boshlash • Начало приёма заявок</div>
+        </div>
+      </div>
+
+      <div class="bullets" aria-hidden="false">
+        <div class="bullet">
+          <div class="ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="#FFD24D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><strong id="b_grant">Grantlar va stipendiyalar</strong><p id="b1sub">Квалифицированная поддержка при подаче заявлений.</p></div>
+        </div>
+
+        <div class="bullet">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 6v6l4 2" stroke="#FFD24D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><strong id="b_guar">O’qishga kirish kafolati</strong><p id="b2sub">Проверенные пути поступления и сопровождение.</p></div>
+        </div>
+
+        <div class="bullet">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M12 3v18" stroke="#FFD24D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><strong id="b_free">Bepul konsultatsiya</strong><p id="b3sub">Первая консультация бесплатно — обсудим вашу ситуацию.</p></div>
+        </div>
+
+        <div class="bullet">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7h7l-5.5 4 2 7L12 17l-6.5 3 2-7L2 9h7z" stroke="#FFD24D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><strong id="b_exp">8+ yillik tajriba</strong><p id="b4sub">Since 2017 — tajriba va natijalar.</p></div>
+        </div>
+      </div>
+
+      <div class="contacts">
+        <div><strong>Ofisimiz lokatsiyasi:</strong> <a href="https://t.me/maxedu/558" target="_blank" rel="noopener" class="cta-link" id="contact_location">t.me/maxedu/558</a></div>
+        <div><strong>Telefon:</strong> <a href="tel:+998996387444" id="contact_phone">+998 99 638 7444</a></div>
+        <div><strong>Telegram:</strong> <a href="https://t.me/maxedu_manager" target="_blank" rel="noopener" id="contact_tg">@maxedu_manager</a></div>
+        <div class="small"><strong>Since:</strong> <span id="contact_since">2017</span> • <a href="https://taplink.cc/maxeducation" target="_blank" rel="noopener" class="cta-link">taplink.cc/maxeducation</a></div>
+      </div>
+    </aside>
+
+    <!-- FORM -->
+    <section class="form-panel" aria-labelledby="formTitle">
+      <div>
+        <div class="form-header">
+          <div>
+            <div id="formTitle" class="form-title">Qabul boshlash</div>
+            <div id="formSubtitle" class="form-sub">To'ldiring — biz 24 soat ichida bog'lanamiz / Заполните — мы свяжемся в течение 24 часов</div>
+          </div>
+
+          <div class="lang-switch" role="tablist" aria-label="Language switch">
+            <button class="lang-btn active" data-lang="uz" aria-pressed="true" type="button">🇺🇿 UZ</button>
+            <button class="lang-btn" data-lang="ru" aria-pressed="false" type="button">🇷🇺 RU</button>
+          </div>
+        </div>
+
+        <form id="qabulForm" onsubmit="event.preventDefault(); sendData();" novalidate>
+          <!-- Full name -->
+          <div class="full field">
+            <label id="lab_name" for="name">Ism familiyangiz</label>
+            <div style="position:relative;">
+              <span class="left-ico" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zM2 22a10 10 0 0120 0" stroke="#fff" stroke-opacity="0.9" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <input id="name" class="with-ico" type="text" placeholder="Ibrohim Axmedov" aria-required="true">
+            </div>
+            <div id="err_name" class="error" style="display:none"></div>
+          </div>
+
+          <!-- Age -->
+          <div class="field">
+            <label id="lab_age" for="age">Yoshingiz nechida?</label>
+            <select id="age" aria-required="false"></select>
+          </div>
+
+          <!-- City -->
+          <div class="field">
+            <label id="lab_city" for="city">Yashayotgan shahringiz</label>
+            <select id="city" aria-required="false"></select>
+          </div>
+
+          <!-- Edu -->
+          <div class="field">
+            <label id="lab_edu" for="edu">Oxirgi bitirgan joyingiz</label>
+            <select id="edu" aria-required="false"></select>
+          </div>
+
+          <!-- Cert -->
+          <div class="field">
+            <label id="lab_cert" for="cert">Sizda qaysi til sertifikati bor?</label>
+            <select id="cert" aria-required="false"></select>
+          </div>
+
+          <!-- Country -->
+          <div class="field">
+            <label id="lab_country" for="country">Qaysi davlatda o'qimoqchisiz?</label>
+            <select id="country" aria-required="false"></select>
+          </div>
+
+          <!-- Program -->
+          <div class="field">
+            <label id="lab_prog" for="program">Qaysi dasturda?</label>
+            <select id="program" aria-required="false"></select>
+          </div>
+
+          <!-- Phone -->
+          <div class="full field">
+            <label id="lab_phone" for="phone">Aktiv telefon raqamingiz</label>
+            <div style="position:relative;">
+              <span class="left-ico" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 16.92V20a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.18 2 2 0 014 2h3.09a2 2 0 012 1.72c.12.98.38 1.93.78 2.82a2 2 0 01-.45 2.11L9.91 10.9a16 16 0 006 6l1.28-1.28a2 2 0 012.11-.45c.9.4 1.84.66 2.82.78A2 2 0 0122 16.92z" stroke="#fff" stroke-opacity="0.9" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <input id="phone" class="with-ico" type="tel" placeholder="+998 90 123 4567" aria-required="true">
+            </div>
+            <div id="err_phone" class="error" style="display:none"></div>
+          </div>
+
+          <div class="full">
+            <div class="actions">
+              <button id="sendBtn" class="btn-primary" type="submit">📩 Yuborish</button>
+              <button type="button" class="btn-ghost" onclick="document.getElementById('qabulForm').reset(); applyLang();">Tozalash</button>
+            </div>
+            <div id="status" class="status" role="status" aria-live="polite"></div>
+            <div class="small" style="margin-top:8px">By submitting you agree to be contacted. • Biz 24 soat ichida javob beramiz.</div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+<script>
+/* ========== Telegram settings ========== */
+const botToken = "8372496698:AAEw2i0aHnKarhn547uDc6xpNLV1S4kalJk";
+const chatId = "-1003284407124";
+
+/* ========== Localization strings (UZ / RU) ========== */
+const T = {
+  uz:{
+    brandTitle: "MAX EDUCATION",
+    brandSubtitle: "Qabul boshlash",
+    formTitle: "Qabul boshlash",
+    formSubtitle: "To'ldiring — biz 24 soat ichida bog'lanamiz",
+    send: "📩 Yuborish",
+    sending: "Yuborilmoqda...",
+    success: "✅ So‘rovingiz yuborildi! Biz 24 soat ichida bog‘lanamiz.",
+    fill: "Iltimos, ism va telefonni to‘ldiring.",
+    contacts:{
+      location: "t.me/maxedu/558",
+      phone: "+998 99 638 7444",
+      tg: "@maxedu_manager",
+      since: "2017",
+      taplink: "taplink.cc/maxeducation"
+    },
+    labels:{
+      name:"Ism familiyangiz",
+      age:"Yoshingiz nechida?",
+      city:"Yashayotgan shahringiz",
+      edu:"Oxirgi bitirgan joyingiz",
+      cert:"Sizda qaysi til sertifikati bor?",
+      country:"Qaysi davlatda o‘qimoqchisiz?",
+      prog:"Qaysi dasturda?",
+      phone:"Aktiv telefon raqamingiz"
+    },
+    placeholders:{ name:"Ibrohim Axmedov", phone:"+998 90 123 4567" },
+    options:{
+      age:["Tanlang","17","18","19","20","21","22","23","24","25","26","27","28","29","30","30+"],
+      city:["Tanlang","Toshkent","Andijon","Namangan","Farg'ona","Navoiy","Samarqand","Buxoro","Jizzax","Qashqadaryo","Surxandaryo","Sirdaryo","Xorazm","Nukus"],
+      edu:["Tanlang","11 yillik maktab","2 yillik kollej","3 yillik kollej","Bakalavr","Magistratura"],
+      cert:["Tanlang","IELTS","TOEFL","TOPIK","SEJONG SKA","Boshqa til sertifikatim bor","Sertifikatim yo‘q"],
+      country:["Tanlang","Janubiy Koreya","Malayziya"],
+      program:["Tanlang","Til kurslari","Bakalavr","Magistratura","Kasbiy ta'lim","Foundation"]
+    }
+  },
+  ru:{
+    brandTitle: "MAX EDUCATION",
+    brandSubtitle: "Начало приёма заявок",
+    formTitle: "Заполните заявку",
+    formSubtitle: "Заполните — мы свяжемся в течение 24 часов",
+    send: "📩 Отправить",
+    sending: "Отправка...",
+    success: "✅ Заявка успешно отправлена! Мы свяжемся с вами в течение 24 часов.",
+    fill: "Пожалуйста, заполните имя и телефон.",
+    contacts:{
+      location: "t.me/maxedu/558",
+      phone: "+998 99 638 7444",
+      tg: "@maxedu_manager",
+      since: "2017",
+      taplink: "taplink.cc/maxeducation"
+    },
+    labels:{
+      name:"Имя и фамилия",
+      age:"Ваш возраст",
+      city:"Город проживания",
+      edu:"Последнее место обучения",
+      cert:"Какой у вас языковой сертификат?",
+      country:"В какой стране хотите учиться?",
+      prog:"По какой программе?",
+      phone:"Активный номер телефона"
+    },
+    placeholders:{ name:"Ivan Ivanov", phone:"+998 90 123 4567" },
+    options:{
+      age:["Выберите","17","18","19","20","21","22","23","24","25","26","27","28","29","30","30+"],
+      city:["Выберите","Ташкент","Андижан","Наманган","Фергана","Навои","Самарканд","Бухара","Джизак","Кашкадарья","Сурхандарья","Сырдарья","Хорезм","Нукус"],
+      edu:["Выберите","11-летняя школа","2-летний колледж","3-летний колледж","Бакалавриат","Магистратура"],
+      cert:["Выберите","IELTS","TOEFL","TOPIK","SEJONG SKA","Другой сертификат","Сертификата нет"],
+      country:["Выберите","Южная Корея","Малайзия"],
+      program:["Выберите","Языковые курсы","Бакалавриат","Магистратура","Проф. образование","Foundation"]
+    }
+  }
+};
+
+let lang = 'uz';
+
+/* Elements */
+const elems = {
+  brandSub: document.getElementById('brandSub'),
+  formTitle: document.getElementById('formTitle'),
+  formSubtitle: document.getElementById('formSubtitle'),
+  sendBtn: document.getElementById('sendBtn'),
+  name: document.getElementById('name'),
+  phone: document.getElementById('phone'),
+  age: document.getElementById('age'),
+  city: document.getElementById('city'),
+  edu: document.getElementById('edu'),
+  cert: document.getElementById('cert'),
+  country: document.getElementById('country'),
+  program: document.getElementById('program'),
+  status: document.getElementById('status'),
+  contact_location: document.getElementById('contact_location'),
+  contact_phone: document.getElementById('contact_phone'),
+  contact_tg: document.getElementById('contact_tg'),
+  contact_since: document.getElementById('contact_since')
+};
+
+/* Language buttons */
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    lang = btn.dataset.lang;
+    applyLang();
+  });
+});
+
+/* Populate selects */
+function populate(id, arr){
+  const sel = document.getElementById(id);
+  sel.innerHTML = '';
+  arr.forEach((val,i)=>{
+    const o = document.createElement('option');
+    o.value = i===0 ? '' : val;
+    o.textContent = val;
+    sel.appendChild(o);
+  });
+}
+
+/* Apply language */
+function applyLang(){
+  const t = T[lang];
+  elems.brandSub.textContent = t.brandSubtitle;
+  elems.formTitle.textContent = t.formTitle;
+  elems.formSubtitle.textContent = t.formSubtitle;
+  elems.sendBtn.textContent = t.send;
+  document.getElementById('lab_name').textContent = t.labels.name;
+  document.getElementById('lab_age').textContent = t.labels.age;
+  document.getElementById('lab_city').textContent = t.labels.city;
+  document.getElementById('lab_edu').textContent = t.labels.edu;
+  document.getElementById('lab_cert').textContent = t.labels.cert;
+  document.getElementById('lab_country').textContent = t.labels.country;
+  document.getElementById('lab_prog').textContent = t.labels.prog;
+  document.getElementById('lab_phone').textContent = t.labels.phone;
+
+  elems.name.placeholder = t.placeholders.name;
+  elems.phone.placeholder = t.placeholders.phone;
+
+  populate('age', t.options.age);
+  populate('city', t.options.city);
+  populate('edu', t.options.edu);
+  populate('cert', t.options.cert);
+  populate('country', t.options.country);
+  populate('program', t.options.program);
+
+  // contacts
+  elems.contact_location.href = 'https://t.me/maxedu/558';
+  elems.contact_location.textContent = t.contacts.location;
+  elems.contact_phone.href = 'tel:+998996387444';
+  elems.contact_phone.textContent = t.contacts.phone;
+  elems.contact_tg.href = 'https://t.me/maxedu_manager';
+  elems.contact_tg.textContent = t.contacts.tg;
+  elems.contact_since.textContent = t.contacts.since;
+
+  setStatus('');
+}
+
+function setStatus(msg, isError=false){
+  elems.status.textContent = msg || '';
+  elems.status.style.color = isError ? getComputedStyle(document.documentElement).getPropertyValue('--error') : getComputedStyle(document.documentElement).getPropertyValue('--success');
+}
+
+/* Validation */
+function validate(){
+  const t = T[lang];
+  const name = elems.name.value.trim();
+  const phone = elems.phone.value.trim();
+  if(!name){ document.getElementById('err_name').style.display='block'; document.getElementById('err_name').textContent = t.fill; return false; }
+  else document.getElementById('err_name').style.display='none';
+  if(!phone){ document.getElementById('err_phone').style.display='block'; document.getElementById('err_phone').textContent = t.fill; return false; }
+  else document.getElementById('err_phone').style.display='none';
+  return true;
+}
+
+/* Send to Telegram */
+async function sendData(){
+  const t = T[lang];
+  setStatus(t.sending);
+  if(!validate()){ setStatus(t.fill, true); return; }
+
+  const payload = {
+    name: elems.name.value.trim(),
+    phone: elems.phone.value.trim(),
+    age: elems.age.value || '-',
+    city: elems.city.value || '-',
+    edu: elems.edu.value || '-',
+    cert: elems.cert.value || '-',
+    country: elems.country.value || '-',
+    program: elems.program.value || '-'
+  };
+
+  const message = `<b>🎓 MAX EDUCATION — Qabul so'rovi</b>\n` +
+    `<b>👤 Ism:</b> ${escapeHtml(payload.name)}\n` +
+    `<b>📞 Telefon:</b> ${escapeHtml(payload.phone)}\n` +
+    `<b>🧾 Yosh:</b> ${escapeHtml(payload.age)}\n` +
+    `<b>🏙️ Shahar:</b> ${escapeHtml(payload.city)}\n` +
+    `<b>🎓 Bitirgan joy:</b> ${escapeHtml(payload.edu)}\n` +
+    `<b>📘 Sertifikat:</b> ${escapeHtml(payload.cert)}\n` +
+    `<b>🌏 Davlat:</b> ${escapeHtml(payload.country)}\n` +
+    `<b>📚 Dastur:</b> ${escapeHtml(payload.program)}`;
+
+  try{
+    const res = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' })
+    });
+    const json = await res.json();
+    if(json.ok){
+      setStatus(t.success);
+      document.getElementById('qabulForm').reset();
+      applyLang();
+    } else {
+      setStatus('Error: ' + (json.description || 'Telegram error'), true);
+    }
+  }catch(err){
+    setStatus('Error: ' + err.message, true);
+  }
+}
+
+/* Escape HTML utility */
+function escapeHtml(s){
+  if(!s) return '';
+  return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+}
+
+/* Submit on Enter */
+document.getElementById('qabulForm').addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter' && e.target.tagName !== 'TEXTAREA'){
+    e.preventDefault();
+    sendData();
+  }
+});
+
+/* Init */
+applyLang();
+</script>
+</body>
+</html>
