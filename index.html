@@ -27,10 +27,19 @@
     color:var(--muted);
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
+
+    /* Изменено: не центрируем по вертикали, чтобы верх не обрезался на мобильных */
     display:flex;
-    align-items:center;
+    align-items:flex-start;          /* <-- was center */
     justify-content:center;
-    padding:28px;
+
+    /* Гарантирует минимум высоты экрана и учитывает вырезы (notch) */
+    min-height:100vh;
+    padding:calc(18px + env(safe-area-inset-top, 0px)) 18px calc(18px + env(safe-area-inset-bottom, 0px));
+    box-sizing:border-box;
+
+    /* Позволяет странице скроллиться если контент выше окна */
+    overflow-y:auto;
   }
 
   /* Layout */
@@ -41,6 +50,8 @@
     grid-template-columns: 1fr 540px;
     gap:28px;
     align-items:stretch;
+    /* небольшой верхний отступ чтобы карточка не прилипала к верху */
+    margin-top:12px;
   }
 
   /* Panels */
