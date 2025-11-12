@@ -27,18 +27,11 @@
     color:var(--muted);
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
-
-    /* Изменено: не центрируем по вертикали, чтобы верх не обрезался на мобильных */
     display:flex;
-    align-items:flex-start;          /* <-- was center */
+    align-items:flex-start;
     justify-content:center;
-
-    /* Гарантирует минимум высоты экрана и учитывает вырезы (notch) */
     min-height:100vh;
     padding:calc(18px + env(safe-area-inset-top, 0px)) 18px calc(18px + env(safe-area-inset-bottom, 0px));
-    box-sizing:border-box;
-
-    /* Позволяет странице скроллиться если контент выше окна */
     overflow-y:auto;
   }
 
@@ -50,7 +43,6 @@
     grid-template-columns: 1fr 540px;
     gap:28px;
     align-items:stretch;
-    /* небольшой верхний отступ чтобы карточка не прилипала к верху */
     margin-top:12px;
   }
 
@@ -131,6 +123,8 @@
 
   .left-ico{ position:absolute; left:12px; top:50%; transform:translateY(-50%); width:20px; height:20px; pointer-events:none; opacity:0.95; }
   input.with-ico{ padding-left:44px; }
+
+  .other-input{ margin-top:8px; display:none; }
 
   .actions{ display:flex; gap:12px; align-items:center; margin-top:8px; }
   .btn-primary{
@@ -265,12 +259,21 @@
           <div class="field">
             <label id="lab_cert" for="cert">Sizda qaysi til sertifikati bor?</label>
             <select id="cert" aria-required="false"></select>
+            <input id="certOther" class="other-input" type="text" placeholder="" aria-label="Boshqa sertifikat (yozilgan)">
+          </div>
+
+          <!-- Cert Level (NEW) -->
+          <div class="field">
+            <label id="lab_certLevel" for="certLevel">Til sertifikati darajasi</label>
+            <select id="certLevel" aria-required="false"></select>
+            <input id="certLevelOther" class="other-input" type="text" placeholder="" aria-label="Boshqa daraja (yozilgan)">
           </div>
 
           <!-- Country -->
           <div class="field">
             <label id="lab_country" for="country">Qaysi davlatda o'qimoqchisiz?</label>
             <select id="country" aria-required="false"></select>
+            <input id="countryOther" class="other-input" type="text" placeholder="" aria-label="Boshqa davlat (yozilgan)">
           </div>
 
           <!-- Program -->
@@ -333,18 +336,31 @@ const T = {
       city:"Yashayotgan shahringiz",
       edu:"Oxirgi bitirgan joyingiz",
       cert:"Sizda qaysi til sertifikati bor?",
+      certLevel:"Til sertifikati darajasi",
       country:"Qaysi davlatda o‘qimoqchisiz?",
       prog:"Qaysi dasturda?",
-      phone:"Aktiv telefon raqamingiz"
+      phone:"Aktiv telefon raqamingiz",
+      otherPlaceholder: "Iltimos, yozing..."
     },
-    placeholders:{ name:"Ibrohim Axmedov", phone:"+998 90 123 4567" },
+    placeholders:{ name:"Ibrohim Axmedov", phone:"+998 90 123 4567", other:"Iltimos, yozing..." },
     options:{
       age:["Tanlang","17","18","19","20","21","22","23","24","25","26","27","28","29","30","30+"],
       city:["Tanlang","Toshkent","Andijon","Namangan","Farg'ona","Navoiy","Samarqand","Buxoro","Jizzax","Qashqadaryo","Surxandaryo","Sirdaryo","Xorazm","Nukus"],
-      edu:["Tanlang","11 yillik maktab","2 yillik kollej","3 yillik kollej","Bakalavr","Magistratura"],
-      cert:["Tanlang","IELTS","TOEFL","TOPIK","SEJONG SKA","Boshqa til sertifikatim bor","Sertifikatim yo‘q"],
-      country:["Tanlang","Janubiy Koreya","Malayziya"],
-      program:["Tanlang","Til kurslari","Bakalavr","Magistratura","Kasbiy ta'lim","Foundation"]
+      edu:["Tanlang","11 yillik maktabni","2 yillik kollejni","3 yillik kollejni","Bakalavrni","Magistraturani"],
+      cert:["Tanlang","IELTS","TOEFL","TOPIK","SEJONG SKA","BOSHQA TIL SERTIFIKATIM BOR","SERTIFIKATIM YOQ"],
+      certLevel:[
+        "Tanlang",
+        "IELTS 5.5",
+        "IELTS 6.5",
+        "IELTS 7.5+",
+        "TOPIK 1",
+        "TOPIK 2",
+        "TOPIK 3+",
+        "Boshqa (yoziladigan)",
+        "Til sertifikatim umuman yo‘q"
+      ],
+      country:["Tanlang","Janubiy Koreya","Malayziya","Boshqa (yoziladigan)"],
+      program:["Tanlang","Til kurslari","Bakalavr","Magistratura","Kasbiy Ta'lim","Foundation"]
     }
   },
   ru:{
@@ -369,17 +385,30 @@ const T = {
       city:"Город проживания",
       edu:"Последнее место обучения",
       cert:"Какой у вас языковой сертификат?",
+      certLevel:"Уровень сертификата",
       country:"В какой стране хотите учиться?",
       prog:"По какой программе?",
-      phone:"Активный номер телефона"
+      phone:"Активный номер телефона",
+      otherPlaceholder: "Пожалуйста, укажите..."
     },
-    placeholders:{ name:"Ivan Ivanov", phone:"+998 90 123 4567" },
+    placeholders:{ name:"Ivan Ivanov", phone:"+998 90 123 4567", other:"Пожалуйста, укажите..." },
     options:{
       age:["Выберите","17","18","19","20","21","22","23","24","25","26","27","28","29","30","30+"],
       city:["Выберите","Ташкент","Андижан","Наманган","Фергана","Навои","Самарканд","Бухара","Джизак","Кашкадарья","Сурхандарья","Сырдарья","Хорезм","Нукус"],
-      edu:["Выберите","11-летняя школа","2-летний колледж","3-летний колледж","Бакалавриат","Магистратура"],
-      cert:["Выберите","IELTS","TOEFL","TOPIK","SEJONG SKA","Другой сертификат","Сертификата нет"],
-      country:["Выберите","Южная Корея","Малайзия"],
+      edu:["Выберите","11 yillik maktabni","2 yillik kollejni","3 yillik kollejni","Bakalavrni","Magistraturani"],
+      cert:["Выберите","IELTS","TOEFL","TOPIK","SEJONG SKA","ДРУГОЙ СЕРТИФИКАТ","СЕРТИФИКАТА НЕТ"],
+      certLevel:[
+        "Выберите",
+        "IELTS 5.5",
+        "IELTS 6.5",
+        "IELTS 7.5+",
+        "TOPIK 1",
+        "TOPIK 2",
+        "TOPIK 3+",
+        "Другое (укажите)",
+        "Сертификата совсем нет"
+      ],
+      country:["Выберите","Южная Корея","Малайзия","Другое (укажите)"],
       program:["Выберите","Языковые курсы","Бакалавриат","Магистратура","Проф. образование","Foundation"]
     }
   }
@@ -399,7 +428,11 @@ const elems = {
   city: document.getElementById('city'),
   edu: document.getElementById('edu'),
   cert: document.getElementById('cert'),
+  certOther: document.getElementById('certOther'),
+  certLevel: document.getElementById('certLevel'),
+  certLevelOther: document.getElementById('certLevelOther'),
   country: document.getElementById('country'),
+  countryOther: document.getElementById('countryOther'),
   program: document.getElementById('program'),
   status: document.getElementById('status'),
   contact_location: document.getElementById('contact_location'),
@@ -421,12 +454,38 @@ document.querySelectorAll('.lang-btn').forEach(btn=>{
 /* Populate selects */
 function populate(id, arr){
   const sel = document.getElementById(id);
+  if(!sel) return;
   sel.innerHTML = '';
   arr.forEach((val,i)=>{
     const o = document.createElement('option');
     o.value = i===0 ? '' : val;
     o.textContent = val;
     sel.appendChild(o);
+  });
+}
+
+/* Decide when to show the "other" input */
+function shouldShowOtherOptionText(optText){
+  if(!optText) return false;
+  const s = optText.toLowerCase();
+  return s.includes('boshqa') || s.includes('другое') || s.includes('yozil') || s.includes('укажите') || s.includes('другой') || s.includes('other');
+}
+
+/* Attach toggle handler for a select + its other input */
+function attachOtherToggle(selectId, otherInput){
+  const sel = document.getElementById(selectId);
+  const input = document.getElementById(otherInput);
+  if(!sel || !input) return;
+  sel.addEventListener('change', ()=>{
+    const text = sel.options[sel.selectedIndex]?.text || '';
+    if( shouldShowOtherOptionText(text) ){
+      input.style.display = 'block';
+      input.placeholder = T[lang].labels.otherPlaceholder || '';
+      input.focus();
+    } else {
+      input.style.display = 'none';
+      input.value = '';
+    }
   });
 }
 
@@ -442,6 +501,7 @@ function applyLang(){
   document.getElementById('lab_city').textContent = t.labels.city;
   document.getElementById('lab_edu').textContent = t.labels.edu;
   document.getElementById('lab_cert').textContent = t.labels.cert;
+  document.getElementById('lab_certLevel').textContent = t.labels.certLevel;
   document.getElementById('lab_country').textContent = t.labels.country;
   document.getElementById('lab_prog').textContent = t.labels.prog;
   document.getElementById('lab_phone').textContent = t.labels.phone;
@@ -453,8 +513,14 @@ function applyLang(){
   populate('city', t.options.city);
   populate('edu', t.options.edu);
   populate('cert', t.options.cert);
+  populate('certLevel', t.options.certLevel);
   populate('country', t.options.country);
   populate('program', t.options.program);
+
+  // set placeholders for "other" inputs
+  if(elems.certOther) elems.certOther.placeholder = t.placeholders.other || '';
+  if(elems.certLevelOther) elems.certLevelOther.placeholder = t.placeholders.other || '';
+  if(elems.countryOther) elems.countryOther.placeholder = t.placeholders.other || '';
 
   // contacts
   elems.contact_location.href = 'https://t.me/maxedu/558';
@@ -465,9 +531,28 @@ function applyLang(){
   elems.contact_tg.textContent = t.contacts.tg;
   elems.contact_since.textContent = t.contacts.since;
 
+  // ensure "other" inputs visibility matches current selection
+  ['cert','certLevel','country'].forEach(id=>{
+    const sel = document.getElementById(id);
+    if(sel){
+      const text = sel.options[sel.selectedIndex]?.text || '';
+      const inputId = id === 'cert' ? 'certOther' : id === 'certLevel' ? 'certLevelOther' : 'countryOther';
+      const input = document.getElementById(inputId);
+      if(input){
+        if(shouldShowOtherOptionText(text)){
+          input.style.display = 'block';
+        }else{
+          input.style.display = 'none';
+          input.value = '';
+        }
+      }
+    }
+  });
+
   setStatus('');
 }
 
+/* Utility: set status */
 function setStatus(msg, isError=false){
   elems.status.textContent = msg || '';
   elems.status.style.color = isError ? getComputedStyle(document.documentElement).getPropertyValue('--error') : getComputedStyle(document.documentElement).getPropertyValue('--success');
@@ -498,19 +583,40 @@ async function sendData(){
     city: elems.city.value || '-',
     edu: elems.edu.value || '-',
     cert: elems.cert.value || '-',
+    certOther: elems.certOther ? elems.certOther.value.trim() : '-',
+    certLevel: elems.certLevel.value || '-',
+    certLevelOther: elems.certLevelOther ? elems.certLevelOther.value.trim() : '-',
     country: elems.country.value || '-',
+    countryOther: elems.countryOther ? elems.countryOther.value.trim() : '-',
     program: elems.program.value || '-'
   };
 
-  const message = `<b>🎓 MAX EDUCATION — Qabul so'rovi</b>\n` +
+  // Build message — include "other" values if provided
+  let message = `<b>🎓 MAX EDUCATION — Qabul so'rovi</b>\n` +
     `<b>👤 Ism:</b> ${escapeHtml(payload.name)}\n` +
     `<b>📞 Telefon:</b> ${escapeHtml(payload.phone)}\n` +
     `<b>🧾 Yosh:</b> ${escapeHtml(payload.age)}\n` +
     `<b>🏙️ Shahar:</b> ${escapeHtml(payload.city)}\n` +
     `<b>🎓 Bitirgan joy:</b> ${escapeHtml(payload.edu)}\n` +
-    `<b>📘 Sertifikat:</b> ${escapeHtml(payload.cert)}\n` +
-    `<b>🌏 Davlat:</b> ${escapeHtml(payload.country)}\n` +
-    `<b>📚 Dastur:</b> ${escapeHtml(payload.program)}`;
+    `<b>📘 Sertifikat:</b> ${escapeHtml(payload.cert)}`;
+
+  if(payload.certOther && payload.certOther !== '-') {
+    message += `\n<b>✏️ Sertifikat (boshqa):</b> ${escapeHtml(payload.certOther)}`;
+  }
+
+  message += `\n<b>🏅 Sertifikat darajasi:</b> ${escapeHtml(payload.certLevel)}`;
+
+  if(payload.certLevelOther && payload.certLevelOther !== '-') {
+    message += `\n<b>✏️ Daraja (boshqa):</b> ${escapeHtml(payload.certLevelOther)}`;
+  }
+
+  message += `\n<b>🌏 Davlat:</b> ${escapeHtml(payload.country)}`;
+
+  if(payload.countryOther && payload.countryOther !== '-') {
+    message += `\n<b>✏️ Davlat (boshqa):</b> ${escapeHtml(payload.countryOther)}`;
+  }
+
+  message += `\n<b>📚 Dastur:</b> ${escapeHtml(payload.program)}`;
 
   try{
     const res = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`,{
@@ -545,8 +651,11 @@ document.getElementById('qabulForm').addEventListener('keydown', (e)=>{
   }
 });
 
-/* Init */
+/* Init: populate and attach toggles */
 applyLang();
+attachOtherToggle('cert','certOther');
+attachOtherToggle('certLevel','certLevelOther');
+attachOtherToggle('country','countryOther');
 </script>
 </body>
 </html>
